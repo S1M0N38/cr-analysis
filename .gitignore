@@ -225,7 +225,7 @@ sync.sh
 data/tokens.py
 
 # Databases
-data/db-*
+data/db*
 
 # Analysis (WIP)
 analysis
