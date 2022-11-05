@@ -110,7 +110,8 @@ async def get_token():
 
 battlelogs = Crawler(
     api_token=asyncio.run(get_token()),
-    trophies_target=10_000,
+    trophies_ranked_target=10_000,
+    trophies_ladder_target=10_000,
     root_players=args.root_players,
     battlelogs_limit=args.players,
     concurrent_requests=args.requests,

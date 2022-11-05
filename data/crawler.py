@@ -25,23 +25,34 @@ async def main():
 asyncio.run(main())
 """
 
+# Trophy Road
+GAME_MODE_LADDER = {
+    72000006: "Ladder",
+    72000044: "Ladder_GoldRush",
+    72000201: "Ladder_CrownRush",
+}
+
+# Path of Legends
+GAME_MODE_RANKED = {
+    72000323: "Ranked1v1",
+    72000327: "Ranked1v1_GoldRush",
+}
+
 GAME_MODE_1V1 = {
     72000009: "Tournament",
     72000010: "Challenge",
     72000066: "Showdown_Ladder",
     72000007: "Friendly",
-    72000006: "Ladder",  # Trophy Road
-    72000044: "Ladder_GoldRush",  # Trophy Road
-    72000201: "Ladder_CrownRush",  # Trophy Road
     72000291: "Challenge_AllCards_EventDeck",  # CC and GC
-    72000323: "Ranked1v1",  # Path of Legends
-    72000327: "Ranked1v1_GoldRush",
+    **GAME_MODE_LADDER,
+    **GAME_MODE_RANKED,
 }
+
 
 Priority = namedtuple(
     "Priority",
-    ("trophies", "last_battle_time"),
-    defaults=[0, ""],
+    ("ranked_trophies", "ladder_trophies", "last_ranked_battle", "last_ladder_battle"),
+    defaults=[0, 0, "", ""],
 )
 Battle = namedtuple(
     "Battle",
@@ -58,7 +69,8 @@ class Crawler:
         self,
         api_token: str,
         root_players: list[str] = ["G9YV9GR8R", "Y9R22RQ2", "R90PRV0PY", "RVCQ2CQGJ"],
-        trophies_target: int = 10_000,
+        trophies_ranked_target: int = 10_000,
+        trophies_ladder_target: int = 10_000,
         battlelogs_limit: Union[int, float] = float("inf"),
         battles_limit: Union[int, float] = float("inf"),
         concurrent_requests: int = 10,
@@ -80,7 +92,8 @@ class Crawler:
         self.battles_limit = battles_limit
         self.battlelog_counter = 0
         self.battles_counter = 0
-        self.trophies_target = trophies_target
+        self.trophies_ranked_target = trophies_ranked_target
+        self.trophies_ladder_target = trophies_ladder_target
 
         # Authentication and http client
         self.api_token = api_token
@@ -192,23 +205,63 @@ class Crawler:
 
         # Update/Create priority for player2 in players_queue
         for battle in reversed(battles):
-            battle_time, _, _, p2 = battle
+            battle_time, game_mode, _, p2 = battle
 
-            # p2.trophies < 1000 make sure that Path of Legend don't mess it up
-            if p2.tag in self.players_requested or p2.trophies < 1000:
+            if p2.tag in self.players_requested:
                 continue
 
-            try:
-                if self.players_queue[p2.tag].last_battle_time < battle_time:
-                    self.players_queue[p2.tag] = Priority(
-                        abs(self.trophies_target - p2.trophies), battle_time
+            if game_mode in GAME_MODE_RANKED and p2.trophies < 31:
+                # filter out battles between top player and mediocre players
+                continue
+
+            if p2.tag in self.players_queue:
+                p = self.players_queue[p2.tag]
+
+                if game_mode in GAME_MODE_RANKED:
+                    if p.last_ranked_battle < battle_time:
+                        self.players_queue[p2.tag] = Priority(
+                            abs(p2.trophies - self.trophies_ranked_target),
+                            p.ladder_trophies,
+                            battle_time,
+                            p.last_ladder_battle,
+                        )
+                    self.log.debug(
+                        f"Update player {p2.tag} ranked trophies ({p2.trophies})"
                     )
-                    self.log.debug(f"Update player {p2.tag} trophies ({p2.trophies})")
-            except KeyError:
-                self.players_queue[p2.tag] = Priority(
-                    abs(self.trophies_target - p2.trophies), battle_time
-                )
-                self.log.debug(f"Add player {p2.tag} with trophies ({p2.trophies})")
+
+                elif game_mode in GAME_MODE_LADDER:
+                    if p.last_ladder_battle < battle_time:
+                        self.players_queue[p2.tag] = Priority(
+                            p.ranked_trophies,
+                            abs(p2.trophies - self.trophies_ladder_target),
+                            p.last_ranked_battle,
+                            battle_time,
+                        )
+                    self.log.debug(
+                        f"Update player {p2.tag} ladder trophies ({p2.trophies})"
+                    )
+            else:
+                if game_mode in GAME_MODE_RANKED:
+                    self.players_queue[p2.tag] = Priority(
+                        abs(p2.trophies - self.trophies_ranked_target),
+                        0,
+                        battle_time,
+                        "",
+                    )
+                    self.log.debug(
+                        f"Add player {p2.tag} with ranked trophies ({p2.trophies})"
+                    )
+
+                elif game_mode in GAME_MODE_LADDER:
+                    self.players_queue[p2.tag] = Priority(
+                        0,
+                        abs(p2.trophies - self.trophies_ladder_target),
+                        "",
+                        battle_time,
+                    )
+                    self.log.debug(
+                        f"Add player {p2.tag} with ladder trophies ({p2.trophies})"
+                    )
 
     def __aiter__(self):
         # Move creation of aiohttp.ClientSession inside__aiter__ to avoid
