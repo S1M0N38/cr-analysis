@@ -9,22 +9,6 @@ from datetime import datetime
 
 from tqdm import tqdm
 
-"""
-Join yesterday files differ between different OS:
-
-- on Linux or Unix (rpi)
-python join.py \
-    -i "$(date --date="yesterday" "+%Y%m%d")*.csv.gz" \
-    -o "$(date --date="yesterday" "+%Y%m%d").csv.gz" \
-    -c
-
-- on FreeBSD or macOS
-python join.py \
-    -i "$(date -v -1d "+%Y%m%d")*.csv.gz" \
-    -o "$(date -v -1d "+%Y%m%d").csv.gz" \
-    -c
-"""
-
 here = pathlib.Path(__file__).parent
 now = datetime.now().strftime("%Y%m%dT%H%M%S")
 
@@ -97,6 +81,20 @@ parser.add_argument(
     default=False,
     help="Overwrite output file if exists.",
 )
+parser.add_argument(
+    "--datetime-min",
+    action="store",
+    type=str,
+    default="2000",
+    help="Consider only battles play after datetime-min.",
+)
+parser.add_argument(
+    "--datetime-max",
+    action="store",
+    type=str,
+    default="3000",
+    help="Consider only battles play before datetime-max.",
+)
 out_type = parser.add_mutually_exclusive_group()
 out_type.add_argument(
     "-c",
@@ -123,6 +121,7 @@ in_paths = list(args.input_dir.glob(args.input_files))
 out_path = args.output_dir / args.output_file
 battles_saved = set()
 
+# TODO infer output based on out_path.suffix
 if args.compress:
     assert "".join(out_path.suffixes) == ".csv.gz", "Output file must end with .csv.gz"
     csv_path = out_path.with_suffix("")
@@ -147,10 +146,11 @@ with open(csv_path, "w", newline="") as csv_file:
                 position=0,
                 disable=args.quiet,
             ):
-                if (hb := hash(tuple(battle))) in battles_saved:
-                    continue
-                writer.writerow(battle)
-                battles_saved.add(hb)
+                if args.datetime_min < battle[0] < args.datetime_max:
+                    if (hb := hash(tuple(battle))) in battles_saved:
+                        continue
+                    writer.writerow(battle)
+                    battles_saved.add(hb)
 
 if args.compress:
 
@@ -174,10 +174,10 @@ elif args.sqlite:
         datetime TEXT, game_mode INT,
         tag1 TEXT, trophies1 INT, crowns1 INT,
         card11 INT, card12 INT, card13 INT, card14 INT,
-        card15 INT, card16 INT, cars17 INT, card18 INT,
+        card15 INT, card16 INT, card17 INT, card18 INT,
         tag2 TEXT, trophies2 INT, crowns2 INT,
         card21 INT, card22 INT, card23 INT, card24 INT,
-        card25 INT, card26 INT, cars27 INT, card28 INT
+        card25 INT, card26 INT, card27 INT, card28 INT
         )"""
     )
     conn.close()
