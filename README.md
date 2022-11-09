@@ -45,8 +45,13 @@ python -m pip install --upgrade pip
 python -m pip install -r ../requirements.txt
 ```
 
-5. Create your own API token [here](https://developer.clashroyale.com/#/) and
-   add it to `tokens.example.py`. Rename `tokens.example.py` to `tokens.py`.
+5. Create a developer account [here](https://developer.clashroyale.com/#/) and
+   add credentials to your env. For example if you use bash add
+```bash
+export API_CLASH_ROYALE_EMAIL="example@mail.com"
+export API_CLASH_ROYALE_PASSWORD="MY_P4S5W0RD"
+```
+to your .bashrc file. The restart the terminal.
 
 6. Run test script to ensure that data collection scripts will runs flawlessly.
 ```bash
