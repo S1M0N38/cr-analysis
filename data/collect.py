@@ -3,14 +3,14 @@ import asyncio
 import csv
 import gzip
 import logging
+import os
 import pathlib
 import shutil
 from datetime import datetime
 
-import aiohttp
+import httpx
 import tqdm
 from crawler import Crawler
-from tokens import TOKENS
 
 # PATHS -------------------------------------------------------------------------------
 
@@ -98,18 +98,32 @@ csv_path = args.database_dir / f"{now}.csv"
 gzip_path = args.database_dir / f"{now}.csv.gz"
 log_path = args.database_dir / "collect.log"
 
+assert (
+    email := os.getenv("API_CLASH_ROYALE_EMAIL")
+), "API_CLASH_ROYALE_EMAIL env variable is not define"
+assert (
+    password := os.getenv("API_CLASH_ROYALE_PASSWORD")
+), "API_CLASH_ROYALE_PASSWORD env variable is not define"
 
-async def get_token():
-    async with aiohttp.ClientSession() as session:
-        async with session.get("https://wtfismyip.com/text") as resp:
-            ip = await resp.text()
-    api_token = TOKENS.get(ip.strip())
-    assert api_token, f"{ip} does not have token"
-    return api_token
+ip = httpx.get("https://wtfismyip.com/text").text.strip()
 
+credentials = {"email": email, "password": password}
+api_key = {
+    "name": "cr-analysis",
+    "description": f"API key automatically generated at {now}",
+    "cidrRanges": [ip],
+    "scope": None,
+}
+
+with httpx.Client(base_url="https://developer.clashroyale.com") as client:
+    client.post("/api/login", json=credentials)
+    keys = client.post("/api/apikey/list", json={}).json().get("keys", [])
+    if len(keys) == 10:
+        client.post("/api/apikey/revoke", json={"id": keys[-1]["id"]})
+    api_token = client.post("/api/apikey/create", json=api_key).json()["key"]["key"]
 
 battlelogs = Crawler(
-    api_token=asyncio.run(get_token()),
+    api_token=api_token,
     trophies_ranked_target=10_000,
     trophies_ladder_target=10_000,
     root_players=args.root_players,
