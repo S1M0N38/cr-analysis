@@ -67,6 +67,10 @@ This command will open a text file with your favorite editor (choose `nano` if
 in doubt). Every line in this file is a scheduled task. Lines that starts with
 `#` are just comments. Add those lines at the end of this file.
 ```crontab
+# Clash Royale API credentials
+API_CLASH_ROYALE_EMAIL="example@mail.com"
+API_CLASH_ROYALE_PASSWORD="MY_P4S5W0RD"
+
   0  *  *  *  *  cd $HOME/cr-analysis/data && ../scripts/collect.sh
   0 12  *  *  *  cd $HOME/cr-analysis/data && ../scripts/join.sh
 # |  |  |  |  |  |
