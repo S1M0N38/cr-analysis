@@ -1,11 +1,9 @@
 import argparse
 import asyncio
 import csv
-import gzip
 import logging
 import os
 import pathlib
-import shutil
 from datetime import datetime
 
 import httpx
@@ -57,26 +55,18 @@ parser.add_argument(
     help="Perform up to Y http requests concurently.",
 )
 parser.add_argument(
-    "-d",
-    "--database-dir",
+    "-o",
+    "--output",
     action="store",
     type=pathlib.Path,
-    default=here / "db-hour",
-    help="Where .csv/.csv.gz will be stored.",
+    default=here / "db-test" / now,
+    help="Output path for .csv.",
 )
 parser.add_argument(
-    "-c",
-    "--compress",
+    "-f",
+    "--force",
     action="store_true",
-    default=False,
-    help="Compress .csv into .csv.gz.",
-)
-parser.add_argument(
-    "-k",
-    "--keep-original",
-    action="store_true",
-    default=False,
-    help="Keep the original .csv after compression.",
+    help="Overwrite output file.",
 )
 parser.add_argument(
     "-v",
@@ -91,13 +81,21 @@ args = parser.parse_args()
 # convert v counts into logging level https://gist.github.com/ms5/9f6df9c42a5f5435be0e
 args.verbose = 40 - (10 * args.verbose) if args.verbose > 0 else 0
 
+
 # CONFIGS -----------------------------------------------------------------------------
 
-args.database_dir.mkdir(parents=True, exist_ok=True)
-csv_path = args.database_dir / f"{now}.csv"
-gzip_path = args.database_dir / f"{now}.csv.gz"
-log_path = args.database_dir / "collect.log"
 
+args.output.parent.mkdir(parents=True, exist_ok=True)
+
+csv_path: pathlib.Path = args.output
+log_path: pathlib.Path = args.output.parent / "collect.log"
+
+assert (
+    not csv_path.exists() or args.force
+), f"{csv_path} already exists. Use -f for overwrite it."
+assert (
+    csv_path.suffix == ".csv"
+), "Output file will be a csv file. Use .csv as suffix for output."
 assert (
     email := os.getenv("API_CLASH_ROYALE_EMAIL")
 ), "API_CLASH_ROYALE_EMAIL env variable is not define"
@@ -163,18 +161,6 @@ async def main():
                     battles_saved.add(hb)
             progress_bar.update()
     progress_bar.close()
-
-    if args.compress:
-        with open(csv_path, "rb") as csv_file:
-            with gzip.open(gzip_path, "wb") as gzip_file:
-                shutil.copyfileobj(csv_file, gzip_file)
-
-        # Check that compression was succefull
-        with gzip.open(gzip_path, "rt") as gzip_file:
-            assert sum(1 for _ in gzip_file) == len(battles_saved), "CompressionError"
-
-        if not args.keep_original:
-            csv_path.unlink()
 
 
 asyncio.run(main())
