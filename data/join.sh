@@ -22,10 +22,5 @@ done
 # execute command and save result in output_file.
 eval "$cmd" | gzip -c > "$output_file"
 
-if [ -s "$output_file" ]; then
-  rm $input_files
-  exit 0
-else
-  echo -e "\nUnknown error occured."
-  exit 1
-fi
+# remove hour csv file keeping only day csv.
+[[ -s "$output_file" ]] && rm $input_files
