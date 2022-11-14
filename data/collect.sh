@@ -15,4 +15,4 @@ python collect.py                                 \
 sort --unique "$csv_path" | gzip > "$csv_path.gz"
 
 # remove csv file keeping only the compress version.
-[[ -f "$csv_path.gz" ]] && rm "$csv_path"
+[[ -s "$csv_path.gz" ]] && rm "$csv_path"
