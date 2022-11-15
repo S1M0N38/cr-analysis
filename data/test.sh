@@ -42,6 +42,7 @@ eval "$cmd" | gzip -c > "$output_file"
 if [ -s "$output_file" ]; then
   echo -e "\nAll tests pass. You're ready to collect."
   rm $input_files
+  rm $output_file
   exit 0
 else
   echo -e "\nUnknown error occured."
