@@ -6,6 +6,9 @@ if [[ "$OSTYPE" != "darwin"* ]]; then
   exit 1
 fi
 
+# Ensure db directory exists
+[ ! -d db ] && mkdir db
+
 # Unzip all file in db-day, `look` only works with files.
 gunzip --keep $(find 'db-day' -type f -name '*.csv.gz')
 

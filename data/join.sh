@@ -10,6 +10,9 @@ else
   echo "Unknown platform"
 fi
 
+# Ensure db-day directory exists
+[ ! -d db-day ] && mkdir db-day
+
 input_files=$(find "db-hour" -type f -name "$yesterday*.csv.gz")
 output_file="db-day/$yesterday.csv.gz"
 
