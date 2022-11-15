@@ -79,7 +79,7 @@ API_CLASH_ROYALE_PASSWORD="MY_P4S5W0RD"
 # |  |  |  |  +----- day of week (0 - 6) (Sunday=0)
 # |  |  |  +------- month (1 - 12)
 # |  |  +--------- day of month (1 - 31)
-# |  +----------- hour (0 - 23) f
+# |  +----------- hour (0 - 23)
 # +------------- min (0 - 59)
 ```
 That's should be all. Scripts scheduled with `crontab` will run in background.
