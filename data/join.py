@@ -1,3 +1,8 @@
+"""
+THIS SCRIPT IS NO LONGER MANTAINED
+I think it's better to develope small specific script like `join.sh` and `split.sh`.
+They are faster and easier to mantain.
+"""
 import argparse
 import csv
 import gzip
