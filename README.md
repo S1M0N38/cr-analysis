@@ -9,16 +9,16 @@ An exercise in data collection/analysis, juggling with millions of records.
 
 <div align="center"><p>
     <a href="https://github.com/S1M0N38/cr-analysis/pulse">
-      <img alt="Last commit" src="https://img.shields.io/github/last-commit/S1M0N38/cr-analysis?style=for-the-badge&color=8bd5ca&labelColor=302D41"/>
+      <img alt="Last commit" src="https://img.shields.io/github/last-commit/S1M0N38/cr-analysis?style=for-the-badge&color=8bd5ca"/>
     </a>
     <a href="https://github.com/S1M0N38/cr-analysis/blob/main/LICENSE">
-      <img alt="License" src="https://img.shields.io/github/license/S1M0N38/cr-analysis?style=for-the-badge&color=ee999f&labelColor=302D41" />
+      <img alt="License" src="https://img.shields.io/github/license/S1M0N38/cr-analysis?style=for-the-badge&color=ee999f" />
     </a>
     <a href="https://github.com/S1M0N38/cr-analysis">
-      <img alt="Repo Size" src="https://img.shields.io/github/repo-size/S1M0N38/cr-analysis?color=DDB6F2&label=SIZE&style=for-the-badge&labelColor=302D41" />
+      <img alt="Repo Size" src="https://img.shields.io/github/repo-size/S1M0N38/cr-analysis?color=DDB6F2&label=SIZE&style=for-the-badge" />
     </a>
     <a href="https://discord.com/users/S1M0N38#0317">
-      <img alt="Discord" src="https://img.shields.io/static/v1?label=DISCORD&message=DM&color=7289da&labelColor=302D41&style=for-the-badge" />
+      <img alt="Discord" src="https://img.shields.io/static/v1?label=DISCORD&message=DM&color=a3b7ff&style=for-the-badge" />
     </a>
 </div>
 
