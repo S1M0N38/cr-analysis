@@ -46,7 +46,8 @@ git clone https://github.com/S1M0N38/cr-analysis.git $HOME/cr-analysis
 ```bash
 cd $HOME/cr-analysis/data
 ```
-Every **data collection** action must be run from this directory.
+Every **data collection** script MUST be run from this directory
+(`cr-analysis/data`).
 
 3. Ensure `python 3.9` or greater is available.
 ``` bash 
@@ -58,7 +59,7 @@ ensured.
 4. Upgrade `pip` and install requirements
 ```bash
 python -m pip install --upgrade pip
-python -m pip install -r ../requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 5. Create a developer account [here](https://developer.clashroyale.com/#/) and
@@ -119,8 +120,8 @@ cr-analysis
 │  ├── db-test
 │  │  └── ...
 │  └── ...
-├── README.md
-└── requirements.txt
+├── ...
+└── README.md
 ```
 In `cr-analysis/data/db-day` are stored compressed CSV files containing battles
 collected on that date (This does not mean that battles were played on that day
@@ -153,8 +154,8 @@ cr-analysis
 │  ├── db-test
 │  │  └── ...
 │  └── ...
-├── README.md
-└── requirements.txt
+├── ...
+└── README.md
 ```
 This means that the file `db/20221111.csv.gz` will contains battle played on
 Nov 11 2022 sorted by time. This way of storing data have a couple of
@@ -168,6 +169,23 @@ advantages:
 For files manipulation `join.sh` and `split.sh` script leverage that power of
 command line programs pre-installed on many Unix-Like OS. Take a look at them 
 if you want to manipulate compressed CSV on your own.
+
+Another way to organize data is to store them in a proper database. The script
+`sqlite.sh` takes file .csv.gz from db and concatenate them in a single
+`db.sqlite` file. Storing data in a database comes handy later when we try to
+perform analysis only on a subset of data (e.g. create pandas dataframe with
+battles played by a specific player).
+```
+cr-analysis
+├── data
+│  ├── db
+│  │  ├── 20221109.csv.gz
+│  │  ├── ...
+│  │  ├── 20221116.csv.gz
+│  │  └── db.sqlite
+│  └── ...
+└── ...
+```
 
 -------------------------------------------------------------------------------
 
