@@ -59,7 +59,7 @@ parser.add_argument(
     "--output",
     action="store",
     type=pathlib.Path,
-    default=here / "db-test" / now,
+    default=here / "db-test" / f'{now}.csv',
     help="Output path for .csv.",
 )
 parser.add_argument(
