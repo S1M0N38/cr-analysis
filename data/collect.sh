@@ -6,7 +6,7 @@ csv_path="db-hour/$(date '+%Y%m%dT%H%M%S').csv"
 # collect battles into csv_path file
 python collect.py                                 \
   --quiet                                         \
-  --players 100000                                \
+  --players $1                                    \
   --requests 13                                   \
   --output "$csv_path"
 

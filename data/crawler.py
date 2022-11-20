@@ -148,6 +148,8 @@ class Crawler:
                 if not resp.ok:
                     self.log.critical(f"Error code {resp.status} - {reason}")
                     sys.exit(f"Error code {resp.status} - {reason}")
+                else:
+                    self.log.info("Connection is ok, ready to collect.")
 
     async def _request_battlelog(self, player_tag: str) -> dict:
         url = f"/v1/players/%23{player_tag}/battlelog"

@@ -148,6 +148,8 @@ async def main():
         smoothing=0.05,
     )
 
+    battlelogs.log.info("Start collecting ...")
+
     with open(csv_path, "a", newline="") as csvfile:
         writer = csv.writer(csvfile)
         async for battles in battlelogs:
@@ -161,6 +163,8 @@ async def main():
                     battles_saved.add(hb)
             progress_bar.update()
     progress_bar.close()
+
+    battlelogs.log.info("End collecting.")
 
 
 asyncio.run(main())
