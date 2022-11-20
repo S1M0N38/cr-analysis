@@ -90,7 +90,7 @@ in doubt). Every line in this file is a scheduled task. Lines that starts with
 API_CLASH_ROYALE_EMAIL="example@mail.com"
 API_CLASH_ROYALE_PASSWORD="MY_P4S5W0RD"
 
-  0  *  *  *  *  cd $HOME/cr-analysis/data && ./collect.sh
+  0  *  *  *  *  cd $HOME/cr-analysis/data && ./collect.sh 100000
   0 12  *  *  *  cd $HOME/cr-analysis/data && ./join.sh
 # |  |  |  |  |  |
 # |  |  |  |  |  +--- command
