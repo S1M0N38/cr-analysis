@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 csv_path="db-hour/$(date '+%Y%m%dT%H%M%S').csv"
 
