@@ -19,7 +19,7 @@ fi
 
 for ((i = 1; i < 3; i++)); do
   echo -e "\nCollect battles from 100 players [$i/2]"
-  csv_path="db-test/${yesterday}T$(date '+%H%M%S').csv"
+  csv_path="../db/test/${yesterday}T$(date '+%H%M%S').csv"
   python collect.py -p 50 -o $csv_path
   sort --unique "$csv_path" | gzip > "$csv_path.gz"
   [[ -f "$csv_path.gz" ]] && rm "$csv_path"
@@ -27,8 +27,8 @@ done
 
 echo -e "\nJoin multiple .csv.gz into a single one"
 
-input_files=$(find "db-test" -type f -name "$yesterday*.csv.gz")
-output_file="db-test/$yesterday.csv.gz"
+input_files=$(find "../db/test" -type f -name "$yesterday*.csv.gz")
+output_file="../db/test/$yesterday.csv.gz"
 
 # create a command for merge yesterday file.
 cmd="sort --merge --unique"

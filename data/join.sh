@@ -10,11 +10,11 @@ else
   echo "Unknown platform"
 fi
 
-# Ensure db-day directory exists
-[ ! -d db-day ] && mkdir db-day
+# Ensure ../db/days directory exists
+[ ! -d "../db/days" ] && mkdir "../db/days"
 
-input_files=$(find "db-hour" -type f -name "$yesterday*.csv.gz")
-output_file="db-day/$yesterday.csv.gz"
+input_files=$(find "../db/hours" -type f -name "$yesterday*.csv.gz")
+output_file="../db/days/$yesterday.csv.gz"
 
 # create a command for merge yesterday file.
 cmd="sort --merge --unique"
@@ -25,5 +25,5 @@ done
 # execute command and save result in output_file.
 eval "$cmd" | gzip -c > "$output_file"
 
-# remove hour csv file keeping only day csv.
+# remove hours csv file keeping only days csv.
 [[ -s "$output_file" ]] && rm $input_files

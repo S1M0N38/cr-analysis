@@ -1,6 +1,6 @@
 #!/bin/bash
 
-csv_path="db-hour/$(date '+%Y%m%dT%H%M%S').csv"
+csv_path="../db/hours/$(date '+%Y%m%dT%H%M%S').csv"
 
 # collect battles into csv_path file
 python collect.py                                 \
