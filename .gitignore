@@ -218,14 +218,11 @@ tags
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,vim,python
 
-# Personal script for sync content with my own raspberry
-sync.sh
-
-# Secret tokens API
-data/tokens.py
-
-# Databases
-data/db*
-
 # Analysis (WIP)
 analysis
+
+# csv.gz files
+db/*/*.csv.gz
+
+# sqlite file
+*.sqlite
