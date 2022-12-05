@@ -80,7 +80,7 @@ have access to command line and [git](https://git-scm.com/) installed ...
 git clone https://github.com/S1M0N38/cr-analysis.git $HOME/cr-analysis
 ```
 
-2. Navigate to `data` subdirectory 
+2. Navigate to `data` subdirectory
 ```bash
 cd $HOME/cr-analysis/data
 ```
@@ -88,7 +88,7 @@ Every **data collection** script MUST be run from this directory
 (`cr-analysis/data`).
 
 3. Ensure `python 3.9` or greater is available.
-``` bash 
+``` bash
 python -V
 ```
 This project is developed using python 3.9 hence backward compatibility is not
@@ -243,4 +243,71 @@ Take a look at them if you want to manipulate compressed CSV on your own.
 
 ## Data Analysis
 
-Work in progress ...
+Data Analysis is still in early stage but here is a simple example if you'd like
+to experimenting on your own. This example use
+[pandas](https://pandas.pydata.org/) as data analysis tool to analyse battles
+played in one day (e.g. on 7th of Nov 2022). It can be thought of as a first
+step towards a more scalable approach able to analyse the whole database.
+
+### Install
+
+Assuming you have already clone this repository ...
+
+1. Navigate to `analysis` subdirectory
+```bash
+cd $HOME/cr-analysis/analysis
+```
+Every **data analysis** command/script MUST be run from this directory
+(`cr-analysis/analysis`).
+
+2. Ensure `python 3.9` or greater is available.
+``` bash
+python -V
+```
+This project is developed using python 3.9 hence backward compatibility is not
+ensured.
+
+3. Upgrade `pip` and install requirements
+```bash
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+This install data analysis dependencies.
+
+### Preprocessing
+
+First it's better to convert data files from well-known csv format to the
+less-known *parquet* format on which we will have a fine grained control while
+working with pandas ([this video](https://youtu.be/9LYYOdIwQXg) explains why).
+Suppose we obtained `db/20221107-20221205/20221107.csv.gz` from the data
+collection pipeline
+```
+cr-analysis
+├── db 
+│  ├── 20221107-20221205
+│  │  ├── 20221107.csv.gz
+│  │  └── ...
+│  └── ...
+└── ...
+```
+You can convert if to parquet format by using `analysis/parquet.py`
+```bash
+python parquet.py -i ../db/20221107-20221205/20221107.csv.gz
+```
+This will create `20221107.parquet` in the same directory of the input file
+```
+cr-analysis
+├── db 
+│  ├── 20221107-20221205
+│  │  ├── 20221107.csv.gz
+│  │  ├── 20221107.parquet
+│  │  └── ...
+│  └── ...
+└── ...
+```
+
+### Simple Example
+
+1. Start jupyerlab server with `jupyer-lab`
+
+2. Take a look at `analysis/simple.ipynb`
