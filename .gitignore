@@ -219,7 +219,9 @@ tags
 # End of https://www.toptal.com/developers/gitignore/api/macos,vim,python
 
 # Analysis (WIP)
-analysis
+WIP*.ipynb
+*.png
+
 
 # database files
 *.csv.gz
