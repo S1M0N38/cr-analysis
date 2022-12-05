@@ -221,8 +221,7 @@ tags
 # Analysis (WIP)
 analysis
 
-# csv.gz files
-db/*/*.csv.gz
-
-# sqlite file
+# database files
+*.csv.gz
 *.sqlite
+*.parquet
