@@ -243,11 +243,10 @@ Take a look at them if you want to manipulate compressed CSV on your own.
 
 ## Data Analysis
 
-Data Analysis is still in early stage but here is a simple example if you'd like
-to experimenting on your own. This example use
+Data Analysis is still in early stage but here is a simple example if you'd
+like to experimenting on your own. This example use
 [pandas](https://pandas.pydata.org/) as data analysis tool to analyse battles
-played in one day (e.g. on 7th of Nov 2022). It can be thought of as a first
-step towards a more scalable approach able to analyse the whole database.
+played in different days.
 
 ### Install
 
@@ -305,9 +304,11 @@ cr-analysis
 │  └── ...
 └── ...
 ```
+The bash script `analysis/parquet.sh` convert all csv file stored in db into
+parquet files.
 
 ### Simple Example
 
 1. Start jupyerlab server with `jupyer-lab`
 
-2. Take a look at `analysis/simple.ipynb`
+2. Take a look at `analysis/analysis.ipynb`
