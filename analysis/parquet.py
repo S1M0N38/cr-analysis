@@ -130,4 +130,4 @@ battles.columns = pd.MultiIndex.from_tuples(columns)
 
 # SAVE TO PARQUET ---------------------------------------------------------------------
 
-battles.to_parquet(parquet_path, engine="pyarrow")
+battles.to_parquet(parquet_path, engine="pyarrow", index=False)
