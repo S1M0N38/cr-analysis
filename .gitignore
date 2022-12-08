@@ -220,8 +220,6 @@ tags
 
 # Analysis (WIP)
 WIP*.ipynb
-*.png
-
 
 # database files
 *.csv.gz
