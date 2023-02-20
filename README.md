@@ -26,6 +26,9 @@ An exercise in data collection/analysis, juggling with millions of records.
 
 ## Data Collection
 
+> [Clash Royale Games dataset](https://www.kaggle.com/datasets/s1m0n38/clash-royale-games)
+> publicly available
+
 First we need data. Clash Royale data can be retrieved using [Clash Royale
 API](https://developer.clashroyale.com/#/). The date we are interested in are
 battles between players, specifically 1v1 top players battles.
