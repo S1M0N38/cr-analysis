@@ -59,7 +59,7 @@ parser.add_argument(
     "--output",
     action="store",
     type=pathlib.Path,
-    default=here.parent / "db" / "test" / f'{now}.csv',
+    default=here.parent / "db" / "test" / f"{now}.csv",
     help="Output path for .csv.",
 )
 parser.add_argument(
@@ -137,7 +137,6 @@ battlelogs = Crawler(
 
 
 async def main():
-
     battles_saved = set()
 
     progress_bar = tqdm.tqdm(
