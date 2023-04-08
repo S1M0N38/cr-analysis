@@ -13,8 +13,16 @@ output_dir="$1-$2"
 # Ensure db directory exists
 [ ! -d $output_dir ] && mkdir $output_dir
 
-# Unzip all file in db-day, `look` only works with files.
-gunzip --keep $(find 'days' -type f -name '*.csv.gz')
+# Unzip relevant files in days, `look` only works with uncompressed files.
+i=0
+while true; do
+    gz_file="days/$(date -v +$((i))'d' -jf '%Y%m%d' $1 '+%Y%m%d').csv.gz"
+    if [ ! -f "$gz_file" ]; then
+        break
+    fi
+    gunzip --keep $gz_file
+    ((i++))
+done
 
 # CSV files to iterate trought
 csv_files=$(find 'days' -type f -name '*.csv')
@@ -25,9 +33,6 @@ while
   datetime="$(date -v +$((i))'d' -jf '%Y%m%d' $1 '+%Y%m%d')"
   [[ $datetime < "$(date -v '+1d' -jf '%Y%m%d' $2 '+%Y%m%d')" ]]
 do
-  # TODO: don't iterate trough all csv files, but only
-  # on ones that are <= datetime
-
   # create a command for merge battle on same datetime.
   cmd="sort --merge --unique"
   for csv_file in $csv_files; do
