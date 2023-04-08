@@ -222,6 +222,7 @@ tags
 WIP*.ipynb
 
 # database files
+*.csv
 *.csv.gz
 *.sqlite
 *.parquet
