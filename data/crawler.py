@@ -39,6 +39,7 @@ GAME_MODE_RANKED = {
     72000328: "Ranked1v1_CrownRush",
     72000333: "PickMode_Ladder",  # MegaDraft in ranked
     72000345: "PickMode_Tournament_GoldRush",
+    72000346: "PickMode_Tournament_CrownRush",
 }
 
 GAME_MODE_1V1 = {
