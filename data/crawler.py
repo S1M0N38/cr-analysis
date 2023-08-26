@@ -191,8 +191,8 @@ class Crawler:
             trophies1 = p1.get("startingTrophies", 0) + p1.get("trophyChange", 0)
             trophies2 = p2.get("startingTrophies", 0) + p2.get("trophyChange", 0)
             crowns1, crowns2 = p1["crowns"], p2["crowns"]
-            deck1 = sorted([card["id"] for card in p1["cards"]])
-            deck2 = sorted([card["id"] for card in p2["cards"]])
+            deck1 = [card["id"] for card in p1["cards"]]
+            deck2 = [card["id"] for card in p2["cards"]]
             return Battle(
                 battle_time,
                 game_mode,
