@@ -3,3 +3,4 @@ httpx
 orjson
 heapdict
 tqdm
+rich
