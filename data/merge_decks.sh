@@ -1,7 +1,7 @@
 #!/bin/bash
 
 season="$1"
-path_decks="../db/decks/{$season}"
+path_decks="../db/decks/${season}"
 
 csv_decks=($(find ${path_decks} -name "decks-????????.csv" | sort -V))
 
