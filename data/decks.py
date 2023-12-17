@@ -152,7 +152,8 @@ def main(path_battles, path_decks, args):
         description="Processing...",
     ):
         csv_deck = path_decks / f"decks-{csv_battle.name}"
-        process_csv_file(csv_battle, csv_deck, args.max_rows)
+        if not csv_deck.exists():
+            process_csv_file(csv_battle, csv_deck, args.max_rows)
 
     # merge decks (slower version than merge_decks.sh)
     if args.merge:
